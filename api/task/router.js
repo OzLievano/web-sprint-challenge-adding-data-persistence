@@ -7,7 +7,14 @@ const Tasks = require('./model')
 router.get('/',function getAllTaks(req,res){
     Tasks.getTasks()
         .then((tasks)=>{
-            res.status(200).json(tasks)
+            const changingTasks = tasks.map((task)=>{
+                const convertedTask = {
+                    ...task, 
+                    ["task_completed"]: task["task_completed"] === 0 ? false : true
+                }
+                return convertedTask
+            })
+            res.status(200).json(changingTasks)
         })
         .catch((err)=>{
             res.status(500).json({error:err.message})
