@@ -18,11 +18,13 @@ router.get('/',function getAllResources(req,res){
 router.post('/',function createResources(req,res){
     const newResource = req.body;
 
+    const existingResources = Resources.getResources()
+    console.log(existingResources.data)
     if(!newResource.resource_name){
         res.status(400).json({error:"please include a resource name"})
     }else{
         Resources.createResource(newResource)
-        .then((resources)=>{
+        .then((resource)=>{
             res.status(201).json(newResource)
         })
         .catch((err)=>{

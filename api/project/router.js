@@ -21,14 +21,18 @@ router.get('/', function getAllProjects(req,res){
 })
 
 router.post('/',function createProjects(req,res){
-    const newProject = {...req.body,"project_completed":false};
+    const newProject = req.body;
 
     if(!newProject.project_name){
         res.status(400).json({error:"Please provide a project name"})
     }else{
         Projects.createProject(newProject)
             .then((projects)=>{
-                res.status(201).json(newProject)
+                if(!newProject.project_completed && !newProject.project_description){
+                    res.status(201).json({...newProject, "project_completed":false,"project_description":null})
+                }else{
+                    res.status(201).json({...newProject,"project_completed":Boolean(newProject.project_completed),"project_description":null})
+                }
             })
             .catch((err)=>{
                 res.status(500).json({error:err.message})

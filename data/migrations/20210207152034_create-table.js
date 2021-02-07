@@ -15,7 +15,7 @@ exports.up = function(knex) {
     })
     .createTable('resources', tbl => {
         tbl.increments();
-        tbl.string('resource_name',128);
+        tbl.string('resource_name',128).unique().notNullable();
         tbl.string('resource_description',128);
     })
     .createTable('project_resources', tbl => {
