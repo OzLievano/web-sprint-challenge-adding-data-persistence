@@ -24,8 +24,8 @@ router.get('/',function getAllTaks(req,res){
 router.post('/',function createTasks(req,res){
     const newTask = req.body;
 
-    if(!newTask.task_description){
-        res.status(400).json({error:"please include a resource name"})
+    if(!newTask.task_description || !newTask.project_id){
+        res.status(400).json({error:"please include a task description and project_id"})
     }else{
         Tasks.createTask(newTask)
         .then((tasks)=>{
