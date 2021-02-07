@@ -1,5 +1,5 @@
 // build your `Project` model here
-const db = require('../../data/db-config');
+const db = require('../../data/dbConfig');
 
 module.exports = {
     getProjects,
@@ -11,5 +11,5 @@ async function getProjects(){
 }
 
 async function createProject(data){
-    return await db('proojects').insert(data);
+    return await db('projects').insert(data);
 }
