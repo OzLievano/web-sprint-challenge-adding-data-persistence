@@ -6,7 +6,14 @@ const router = express.Router();
 router.get('/', function getAllProjects(req,res){
     Projects.getProjects()
         .then((projects)=>{
-            res.status(200).json(projects);
+            const changingProjects = projects.map((project)=>{
+                const convertedProject = {
+                    ...project, 
+                    ["project_completed"]: project["project_completed"] === 0 ? false : true
+                }
+                return convertedProject
+            })
+            res.status(200).json(changingProjects);
         })
         .catch((err)=>{
             res.status(500).json({error:err.message})
@@ -14,7 +21,7 @@ router.get('/', function getAllProjects(req,res){
 })
 
 router.post('/',function createProjects(req,res){
-    const newProject = req.body;
+    const newProject = {...req.body,"project_completed":false};
 
     if(!newProject.project_name){
         res.status(400).json({error:"Please provide a project name"})
